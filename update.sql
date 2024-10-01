@@ -1,0 +1,14 @@
+create table belt_grade (id integer not null, color varchar(255), primary key (id));
+create table category_belt_grade (id integer not null, name varchar(255), primary key (id));
+create table category_weight (id integer not null, final_weight varchar(255), inicial_weight varchar(255), name varchar(255), primary key (id));
+create table country (id integer not null, name varchar(255), primary key (id));
+create table department (id integer not null, name varchar(255), primary key (id));
+create table document_type (id integer not null, name varchar(255), primary key (id));
+create table location (id integer not null, direction varchar(255), name varchar(255), phone_number varchar(255), primary key (id));
+create sequence belt_grade_seq start with 1 increment by 50;
+create sequence category_belt_grade_seq start with 1 increment by 50;
+create sequence category_weight_seq start with 1 increment by 50;
+create sequence country_seq start with 1 increment by 50;
+create sequence department_seq start with 1 increment by 50;
+create sequence document_type_seq start with 1 increment by 50;
+create sequence location_seq start with 1 increment by 50;
