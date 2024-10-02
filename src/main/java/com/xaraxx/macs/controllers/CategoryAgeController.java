@@ -3,21 +3,24 @@ package com.xaraxx.macs.controllers;
 import com.xaraxx.macs.models.CategoryAge;
 import com.xaraxx.macs.repository.CategoryAgeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping(path="/category-age")
+@RestController
 public class CategoryAgeController {
     @Autowired
-    private CategoryAgeRepository categoryAgeRepository;
+    private CategoryAgeRepository repository;
 
-    @GetMapping(path="/all")
+    CategoryAgeController(CategoryAgeRepository repository){
+        this.repository = repository;
+    }
+
+    @GetMapping(path="/category-age/")
     public @ResponseBody Iterable<CategoryAge> getAllCategoriesByAges() {
         // This returns a JSON or XML with the users
-        return categoryAgeRepository.findAll();
+        return repository.findAll();
     }
 
 }
