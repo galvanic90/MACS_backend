@@ -17,7 +17,7 @@ public class CategoryAgeController {
         this.repository = repository;
     }
 
-    @GetMapping(path="/category-age/")
+    @GetMapping(path="/category-age")
     public @ResponseBody Iterable<CategoryAge> getAllCategoriesByAges() {
         // This returns a JSON or XML with the users
         return repository.findAll();
