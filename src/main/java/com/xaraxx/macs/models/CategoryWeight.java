@@ -1,5 +1,7 @@
 package com.xaraxx.macs.models;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +15,7 @@ public class CategoryWeight {
 
     private String name;
 
-    private String inicialWeight;
+    private String initialWeight;
 
     private String finalWeight;
 
@@ -33,12 +35,12 @@ public class CategoryWeight {
         this.name = name;
     }
 
-    public String getInicialWeight() {
-        return inicialWeight;
+    public String getInitialWeight() {
+        return initialWeight;
     }
 
-    public void setInicialWeight(String inicialWeight) {
-        this.inicialWeight = inicialWeight;
+    public void setInitialWeight(String initialWeight) {
+        this.initialWeight = initialWeight;
     }
 
     public String getFinalWeight() {
@@ -47,5 +49,27 @@ public class CategoryWeight {
 
     public void setFinalWeight(String finalWeight) {
         this.finalWeight = finalWeight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (!(o instanceof CategoryWeight categoryWeight))
+            return false;
+        return Objects.equals(this.id, categoryWeight.id) && Objects.equals(this.name, categoryWeight.name)
+                && Objects.equals(this.initialWeight, categoryWeight.initialWeight) && Objects.equals(this.finalWeight, categoryWeight.finalWeight);
+
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.id, this.name, this.initialWeight, this.finalWeight);
+    }
+
+    @Override
+    public String toString(){
+        return "Category-Weight{" + "id=" + this.id + ", name='" + this.name + '\'' + ", initialWeight='" + this.initialWeight + '\'' + ", finalWeight='" + this.finalWeight + '}';
     }
 }
