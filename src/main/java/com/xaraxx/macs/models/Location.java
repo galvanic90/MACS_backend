@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 @Entity
 public class Location {
     @Id
@@ -13,7 +15,7 @@ public class Location {
 
     private String name;
 
-    private String direction;
+    private String address;
 
     private String phoneNumber;
     
@@ -30,7 +32,44 @@ public class Location {
     }
 
     public void setName(String name){
-        
+        this.name = name;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (!(o instanceof Location location))
+            return false;
+        return Objects.equals(this.id, location.id) && Objects.equals(this.name, location.name)
+                && Objects.equals(this.address, location.address) && Objects.equals(this.phoneNumber, location.phoneNumber);
+
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.id, this.name, this.address, this.phoneNumber);
+    }
+
+    @Override
+    public String toString(){
+        return "Location{" + "id=" + this.id + ", name='" + this.name + '\'' + ", initialWeight='" + this.address + '\'' + ", finalWeight='" + this.phoneNumber + '}';
+    }
 }
