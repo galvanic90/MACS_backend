@@ -18,7 +18,7 @@ public class Municipality{
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "FK_department")
     private Department department;
 
     public Integer getId() {
