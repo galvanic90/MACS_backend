@@ -48,6 +48,6 @@ public class DocumentType{
 
     @Override
     public String toString(){
-        return "Document-Type{" + "id=" + this.id + ", name='" + this.name + '}';
+        return "Document-Type{" + "id=" + this.id + '\'' + ", name='" + this.name + '}';
     }
 }

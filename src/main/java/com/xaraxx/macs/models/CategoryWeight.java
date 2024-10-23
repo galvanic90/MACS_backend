@@ -70,6 +70,6 @@ public class CategoryWeight {
 
     @Override
     public String toString(){
-        return "Category-Weight{" + "id=" + this.id + ", name='" + this.name + '\'' + ", initialWeight='" + this.initialWeight + '\'' + ", finalWeight='" + this.finalWeight + '}';
+        return "Category-Weight{" + "id=" + this.id + '\'' +", name='" + this.name + '\'' + ", initialWeight='" + this.initialWeight + '\'' + ", finalWeight='" + this.finalWeight + '}';
     }
 }

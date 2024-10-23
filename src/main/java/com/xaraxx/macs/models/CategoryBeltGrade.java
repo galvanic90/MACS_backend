@@ -50,7 +50,7 @@ public class CategoryBeltGrade {
 
     @Override
     public String toString(){
-        return "Category-Belt-Grade{" + "id=" + this.id + ", name='" + this.name + '}';
+        return "Category-Belt-Grade{" + "id=" + this.id + '\'' +", name='" + this.name + '}';
     }
     
 }

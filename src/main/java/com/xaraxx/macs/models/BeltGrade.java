@@ -48,6 +48,6 @@ public class BeltGrade {
 
     @Override
     public String toString(){
-        return "Belt-Grade{" + "id=" + this.id + ", color='" + this.color + '}';
+        return "Belt-Grade{" + "id=" + this.id + '\'' + ", color='" + this.color + '}';
     }
 }
