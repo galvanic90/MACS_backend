@@ -37,6 +37,14 @@ public class Municipality{
         this.name = name;
     }
 
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     @Override
     public boolean equals(Object o) {
 
@@ -44,17 +52,17 @@ public class Municipality{
             return true;
         if (!(o instanceof Municipality municipality))
             return false;
-        return Objects.equals(this.id, municipality.id) && Objects.equals(this.name, municipality.name);
+        return Objects.equals(this.id, municipality.id) && Objects.equals(this.name, municipality.name) && Objects.equals(this.department, municipality.department);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name);
+        return Objects.hash(this.id, this.name, this.department);
     }
 
     @Override
     public String toString(){
-        return "Department{" + "id=" + this.id + ", name='" + this.name + '}';
+        return "Municipality{" + "id=" + this.id + '\'' +", name=" + this.name + '\'' +", department=" + this.department + "}";
     }
 
 }

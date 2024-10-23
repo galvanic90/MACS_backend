@@ -70,6 +70,6 @@ public class Location {
 
     @Override
     public String toString(){
-        return "Location{" + "id=" + this.id + ", name='" + this.name + '\'' + ", initialWeight='" + this.address + '\'' + ", finalWeight='" + this.phoneNumber + '}';
+        return "Location{" + "id=" + this.id + '\'' + ", name='" + this.name + '\'' + ", address='" + this.address + '\'' + ", phone-number='" + this.phoneNumber + '}';
     }
 }

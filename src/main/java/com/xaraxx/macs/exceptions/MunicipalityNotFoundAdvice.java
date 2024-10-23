@@ -9,9 +9,9 @@ import com.xaraxx.macs.models.Municipality;
 
 @RestControllerAdvice
 public class MunicipalityNotFoundAdvice {
-    @ExceptionHandler(Municipality.class)
+    @ExceptionHandler(MunicipalityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String municipalityNotFoundHadler(MunicipalityNotFoundException exception){
+    String municipalityNotFoundHandler(MunicipalityNotFoundException exception){
         return exception.getMessage();
     }
 }
