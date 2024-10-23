@@ -2,8 +2,9 @@ package com.xaraxx.macs.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.OneToOne;
 
 import java.util.Objects;
 
@@ -18,7 +19,18 @@ public class Location {
     private String address;
 
     private String phoneNumber;
-    
+
+    @OneToOne
+    private Municipality municipality;
+
+    public Municipality getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(Municipality municipality) {
+        this.municipality = municipality;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -59,17 +71,19 @@ public class Location {
         if (!(o instanceof Location location))
             return false;
         return Objects.equals(this.id, location.id) && Objects.equals(this.name, location.name)
-                && Objects.equals(this.address, location.address) && Objects.equals(this.phoneNumber, location.phoneNumber);
+                && Objects.equals(this.address, location.address) && Objects.equals(this.phoneNumber, location.phoneNumber)
+                && Objects.equals(this.municipality, location.municipality);
 
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name, this.address, this.phoneNumber);
+        return Objects.hash(this.id, this.name, this.address, this.phoneNumber, this.municipality);
     }
 
     @Override
     public String toString(){
-        return "Location{" + "id=" + this.id + '\'' + ", name='" + this.name + '\'' + ", address='" + this.address + '\'' + ", phone-number='" + this.phoneNumber + '}';
+        return "Location{" + "id=" + this.id + '\'' + ", name='" + this.name + '\'' + ", address='" + this.address + '\''
+                + ", phone-number='" + this.phoneNumber + '\'' + ", municipality=" + this.municipality +'}';
     }
 }
