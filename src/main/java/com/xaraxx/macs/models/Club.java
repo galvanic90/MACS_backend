@@ -27,7 +27,7 @@ public class Club {
     private Municipality municipality;
 
     @ManyToOne
-    @JoinColumn(name = "FK_country")
+    @JoinColumn(name = "FK_country", nullable = false)
     private Country country;
 
     public Integer getId() {

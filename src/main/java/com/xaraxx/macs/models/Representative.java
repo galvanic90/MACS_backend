@@ -21,11 +21,11 @@ public class Representative {
     private String phoneNumber;
 
     @ManyToOne
-    @JoinColumn(name = "FK_document_type")
+    @JoinColumn(name = "FK_document_type", nullable = false)
     private DocumentType documentType;
 
     @ManyToOne
-    @JoinColumn(name="FK_club")
+    @JoinColumn(name="FK_club", nullable = false)
     private Club club;
 
     public Integer getId() {

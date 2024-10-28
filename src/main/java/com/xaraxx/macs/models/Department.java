@@ -12,8 +12,16 @@ public class Department {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-
     private String name;
+    private Integer code;
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 
     public Integer getId() {
         return id;
@@ -38,16 +46,17 @@ public class Department {
             return true;
         if (!(o instanceof Department department))
             return false;
-        return Objects.equals(this.id, department.id) && Objects.equals(this.name, department.name);
+        return Objects.equals(this.id, department.id) && Objects.equals(this.name, department.name)
+                && Objects.equals(this.code, department.code);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name);
+        return Objects.hash(this.id, this.name, this.code);
     }
 
     @Override
     public String toString(){
-        return "Department{" + "id=" + this.id + '\'' +", name='" + this.name + '}';
+        return "Department{" + "id=" + this.id + '\'' +", name=" + this.name + '\'' + ", code=" + this.code + '}';
     }
 }
