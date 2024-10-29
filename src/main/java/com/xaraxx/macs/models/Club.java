@@ -1,13 +1,10 @@
 package com.xaraxx.macs.models;
 
+import java.util.List;
 import com.xaraxx.macs.models.Municipality;
 import com.xaraxx.macs.models.Country;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
 
@@ -28,6 +25,18 @@ public class Club {
     @ManyToOne
     @JoinColumn(name = "FK_country", nullable = false)
     private Country country;
+
+    //CHECK OUT THIS I DON'T KNOW IF IS OK
+    @OneToMany(targetEntity = Athlete.class, fetch = FetchType.LAZY)
+    private List  athleteList;
+
+    public List getAthleteList() {
+        return athleteList;
+    }
+
+    public void setAthleteList(List athleteList) {
+        this.athleteList = athleteList;
+    }
 
     public Integer getId() {
         return id;
@@ -70,26 +79,28 @@ public class Club {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Club club = (Club) o;
-        return id.equals(club.id) && name.equals(club.name) && email.equals(club.email) && municipality.equals(club.municipality) && country.equals(club.country);
+    public boolean equals(Object o){
+        if (this == o)
+            return true;
+        if (!(o instanceof Club club))
+            return false;
+        return Objects.equals(this.id, club.id) && Objects.equals(this.name, club.name) && Objects.equals(this.email, club.email)
+                && Objects.equals(this.municipality, club.municipality) && Objects.equals(this.country, club.country) && Objects.equals(this.athleteList, club.athleteList);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, name, email, municipality, country);
+    public int hashCode(){
+        return Objects.hash(this.id, this.name, this.email, this.municipality, this.country, this.athleteList);
     }
-
     @Override
     public String toString() {
         return "Club{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", municipality=" + municipality + '\'' +
-                ", country=" + country + '\'' +
+                "id=" + this.id +
+                ", name='" + this.name + '\'' +
+                ", email='" + this.email + '\'' +
+                ", municipality=" + this.municipality + '\'' +
+                ", country=" + this.country + '\'' +
+                ", athletes=" + this.athleteList + '\'' +
                 '}';
     }
 }

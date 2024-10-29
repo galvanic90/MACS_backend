@@ -44,6 +44,7 @@ public class ClubController {
                     club.setEmail(newClub.getEmail());
                     club.setCountry(newClub.getCountry());
                     club.setMunicipality(newClub.getMunicipality());
+                    club.setAthleteList(newClub.getAthleteList());
                     return repository.save(club);
                 })
                 .orElseGet(() ->{
