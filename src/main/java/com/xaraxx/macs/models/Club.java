@@ -28,13 +28,13 @@ public class Club {
 
     //CHECK OUT THIS I DON'T KNOW IF IS OK
     @OneToMany(targetEntity = Athlete.class, fetch = FetchType.LAZY)
-    private List  athleteList;
+    private List<Athlete> athleteList;
 
-    public List getAthleteList() {
+    public List<Athlete> getAthleteList() {
         return athleteList;
     }
 
-    public void setAthleteList(List athleteList) {
+    public void setAthleteList(List<Athlete> athleteList) {
         this.athleteList = athleteList;
     }
 
