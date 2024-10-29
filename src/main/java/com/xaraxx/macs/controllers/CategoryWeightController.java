@@ -1,7 +1,7 @@
 package com.xaraxx.macs.controllers;
 
+import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.CategoryWeight;
-import com.xaraxx.macs.exceptions.CategoryWeightNotFoundException;
 import com.xaraxx.macs.repositories.CategoryWeightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,13 +37,13 @@ public class CategoryWeightController {
 
     // Get a single item
     @GetMapping("/category-weight/{id}")
-    CategoryWeight getCategoryWeightById(@PathVariable Integer id){
+    public CategoryWeight getCategoryWeightById(@PathVariable Integer id){
         return repository.findById(id)
-            .orElseThrow(() -> new CategoryWeightNotFoundException(id));
+            .orElseThrow(() -> new EntityNotFoundException(id));
     }
 
     @PutMapping("/category-weight/{id}")
-    CategoryWeight updateCategoryWeightById(@RequestBody CategoryWeight newCategoryWeight, @PathVariable Integer id){
+    public CategoryWeight updateCategoryWeightById(@RequestBody CategoryWeight newCategoryWeight, @PathVariable Integer id){
         return repository.findById(id)
                 .map(categoryWeight -> {
                     categoryWeight.setName(newCategoryWeight.getName());
@@ -57,7 +57,7 @@ public class CategoryWeightController {
     }
 
     @DeleteMapping("/category-weight/{id}")
-    void deleteCategoryWeightById(@PathVariable Integer id) {
+    public void deleteCategoryWeightById(@PathVariable Integer id) {
         repository.deleteById(id);
     }
 }

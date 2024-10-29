@@ -1,6 +1,6 @@
 package com.xaraxx.macs.controllers;
 
-import com.xaraxx.macs.exceptions.CategoryBeltGradeNotFoundException;
+import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.CategoryBeltGrade;
 import com.xaraxx.macs.repositories.CategoryBeltGradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,13 @@ public class CategoryBeltGradeController {
     }
 
     @GetMapping("/category-belt-grade/{id}")
-    CategoryBeltGrade getCategoryBeltGradeById(@PathVariable Integer id){
+    public CategoryBeltGrade getCategoryBeltGradeById(@PathVariable Integer id){
         return repository.findById(id)
-                .orElseThrow(() -> new CategoryBeltGradeNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id));
     }
 
     @PutMapping("/category-belt-grade/{id}")
-    CategoryBeltGrade updateCategoryBeltGradeById(@RequestBody CategoryBeltGrade newCategoryBeltGrade, @PathVariable Integer id){
+    public CategoryBeltGrade updateCategoryBeltGradeById(@RequestBody CategoryBeltGrade newCategoryBeltGrade, @PathVariable Integer id){
         return repository.findById(id)
                 .map(categoryBeltGrade -> {
                     categoryBeltGrade.setName(newCategoryBeltGrade.getName());
@@ -42,7 +42,7 @@ public class CategoryBeltGradeController {
     }
 
     @DeleteMapping("/category-belt-grade/{id}")
-    void deleteCategoryBeltGradeById(@PathVariable Integer id){
+    public void deleteCategoryBeltGradeById(@PathVariable Integer id){
         repository.deleteById(id);
     }
 

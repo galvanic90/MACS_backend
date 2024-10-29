@@ -1,6 +1,6 @@
 package com.xaraxx.macs.controllers;
 
-import com.xaraxx.macs.exceptions.DepartmentNotFoundException;
+import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.Department;
 import com.xaraxx.macs.repositories.DepartmentRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +24,6 @@ public class DepartmentController {
     @GetMapping("/department/{id}")
     Department getDepartmentById(@PathVariable Integer id){
         return repository.findById(id)
-                .orElseThrow(() -> new DepartmentNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id));
     }
 }

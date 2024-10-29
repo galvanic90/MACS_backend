@@ -1,11 +1,13 @@
 package com.xaraxx.macs.controllers;
 
-import com.xaraxx.macs.exceptions.ClubNotFoundException;
+import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.Club;
 import com.xaraxx.macs.repositories.ClubRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +35,24 @@ public class ClubController {
     @GetMapping("/club/{id}")
     public Club getClubById(@PathVariable Integer id){
         return repository.findById(id)
-                .orElseThrow(() -> new ClubNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id));
+    }
+    @PutMapping("/club/{id}")
+    public Club updateClubById(@RequestBody Club newClub, @PathVariable Integer id){
+        return repository.findById(id)
+                .map(club -> {club.setName(newClub.getName());
+                    club.setEmail(newClub.getEmail());
+                    club.setCountry(newClub.getCountry());
+                    club.setMunicipality(newClub.getMunicipality());
+                    return repository.save(club);
+                })
+                .orElseGet(() ->{
+                    return repository.save(newClub);
+                });
+    }
+
+    @DeleteMapping("/club/{id}")
+    public void deleteClubById(@PathVariable Integer id){
+        repository.deleteById(id);
     }
 }

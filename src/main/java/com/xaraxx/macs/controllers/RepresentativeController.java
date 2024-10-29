@@ -1,11 +1,13 @@
 package com.xaraxx.macs.controllers;
 
-import com.xaraxx.macs.exceptions.RepresentativeNotFoundException;
+import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.Representative;
 import com.xaraxx.macs.repositories.RepresentativeRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +35,28 @@ public class RepresentativeController {
     @GetMapping("/representative/{id}")
     public Representative getRepresentativeById(@PathVariable Integer id){
         return repository.findById(id)
-                .orElseThrow(() -> new RepresentativeNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id));
+    }
+
+    @PutMapping("/representative/{id}")
+    public Representative updateRepresentativeById(@RequestBody Representative newRepresentative, @PathVariable Integer id){
+        return repository.findById(id)
+                .map((representative)->{
+                    representative.setName(newRepresentative.getName());
+                    representative.setLastNane(newRepresentative.getLastNane());
+                    representative.setPhoneNumber(newRepresentative.getPhoneNumber());
+                    representative.setDocumentType(newRepresentative.getDocumentType());
+                    representative.setDocumentNumber(newRepresentative.getDocumentNumber());
+                    representative.setClub(newRepresentative.getClub());
+                    return repository.save(representative);
+                })
+                .orElseGet(()->{
+                    return repository.save(newRepresentative);
+                });
+    }
+
+    @DeleteMapping("/representative/{id}")
+    public void deleteRepresentativeById(@PathVariable Integer id){
+        repository.deleteById(id);
     }
 }

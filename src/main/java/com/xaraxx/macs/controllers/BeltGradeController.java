@@ -1,6 +1,6 @@
 package com.xaraxx.macs.controllers;
 
-import com.xaraxx.macs.exceptions.BeltGradeNotFoundException;
+import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.BeltGrade;
 import com.xaraxx.macs.repositories.BeltGradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,13 @@ public class BeltGradeController {
 
     // Get a single item
     @GetMapping("/belt-grade/{id}")
-    BeltGrade getBeltGradeById(@PathVariable Integer id){
+    public BeltGrade getBeltGradeById(@PathVariable Integer id){
         return repository.findById(id)
-                .orElseThrow(() -> new BeltGradeNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id));
     }
 
     @PutMapping("/belt-grade/{id}")
-    BeltGrade updateBeltGradeById(@RequestBody BeltGrade newBeltGrade, @PathVariable Integer id){
+    public BeltGrade updateBeltGradeById(@RequestBody BeltGrade newBeltGrade, @PathVariable Integer id){
         return repository.findById(id)
                 .map(beltGrade -> {
                     beltGrade.setColor(newBeltGrade.getColor());
@@ -51,7 +51,7 @@ public class BeltGradeController {
     }
 
     @DeleteMapping("/belt-grade/{id}")
-    void deleteBeltGradeById(@PathVariable Integer id) {
+    public void deleteBeltGradeById(@PathVariable Integer id) {
         repository.deleteById(id);
     }
 
