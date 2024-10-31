@@ -1,10 +1,6 @@
 package com.xaraxx.macs.models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
 @Entity
@@ -15,7 +11,8 @@ public class Athlete {
     private String name;
     private String lastName;
     private String idNumber;
-    private String sex;
+    @Enumerated(EnumType.ORDINAL)
+    private Gender sex;
     private String birthDate;
     private double weight;
     private String pictureUrl;
@@ -64,11 +61,11 @@ public class Athlete {
         this.idNumber = idNumber;
     }
 
-    public String getSex() {
+    public Gender getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Gender sex) {
         this.sex = sex;
     }
 
