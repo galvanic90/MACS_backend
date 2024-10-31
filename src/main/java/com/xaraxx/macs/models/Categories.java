@@ -40,27 +40,27 @@ public class Categories {
         this.sex = sex;
     }
 
-    public CategoryWeight getCategoryWeight() {
+    public CategoryWeight getCategoriesWeight() {
         return categoryWeight;
     }
 
-    public void setCategoryWeight(CategoryWeight categoryWeight) {
+    public void setCategoriesWeight(CategoryWeight categoryWeight) {
         this.categoryWeight = categoryWeight;
     }
 
-    public CategoryBeltGrade getCategoryBeltGrade() {
+    public CategoryBeltGrade getCategoriesBeltGrade() {
         return categoryBeltGrade;
     }
 
-    public void setCategoryBeltGrade(CategoryBeltGrade categoryBeltGrade) {
+    public void setCategoriesBeltGrade(CategoryBeltGrade categoryBeltGrade) {
         this.categoryBeltGrade = categoryBeltGrade;
     }
 
-    public CategoryAge getCategoryAge() {
+    public CategoryAge getCategoriesAge() {
         return categoryAge;
     }
 
-    public void setCategoryAge(CategoryAge categoryAge) {
+    public void setCategoriesAge(CategoryAge categoryAge) {
         this.categoryAge = categoryAge;
     }
 
