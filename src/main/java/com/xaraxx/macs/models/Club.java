@@ -26,8 +26,7 @@ public class Club {
     @JoinColumn(name = "FK_country", nullable = false)
     private Country country;
 
-    //CHECK OUT THIS I DON'T KNOW IF IS OK
-    @OneToMany(targetEntity = Athlete.class, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Athlete> athleteList;
 
     public List<Athlete> getAthleteList() {

@@ -17,7 +17,7 @@ public class Athlete {
     private double weight;
     private String pictureUrl;
     @ManyToOne
-    @JoinColumn(name="FK_club")
+    @JoinColumn(name="FK_club", referencedColumnName = "id")
     private Club club;
     @ManyToOne
     @JoinColumn(name="FK_document_type")
