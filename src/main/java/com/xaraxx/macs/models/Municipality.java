@@ -14,12 +14,19 @@ public class Municipality{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-
-    private String name;
-
     @ManyToOne
     @JoinColumn(name = "FK_department")
     private Department department;
+    private Integer code;
+    private String name;
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
 
     public Integer getId() {
         return id;
@@ -52,17 +59,18 @@ public class Municipality{
             return true;
         if (!(o instanceof Municipality municipality))
             return false;
-        return Objects.equals(this.id, municipality.id) && Objects.equals(this.name, municipality.name) && Objects.equals(this.department, municipality.department);
+        return Objects.equals(this.id, municipality.id) && Objects.equals(this.name, municipality.name)
+                && Objects.equals(this.department, municipality.department) && Objects.equals(this.code, municipality.code);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name, this.department);
+        return Objects.hash(this.id, this.department, this.name, this.code);
     }
 
     @Override
     public String toString(){
-        return "Municipality{" + "id=" + this.id + '\'' +", name=" + this.name + '\'' +", department=" + this.department + "}";
+        return "Municipality{" + "id=" + this.id + ", department=" + this.department + '\'' + ", code=" + this.code+ '\'' +", name=" + this.name + '\'' + "}";
     }
 
 }

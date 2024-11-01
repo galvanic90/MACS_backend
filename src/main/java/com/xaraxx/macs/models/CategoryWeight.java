@@ -2,10 +2,7 @@ package com.xaraxx.macs.models;
 
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class CategoryWeight {
@@ -72,4 +69,5 @@ public class CategoryWeight {
     public String toString(){
         return "Category-Weight{" + "id=" + this.id + '\'' +", name='" + this.name + '\'' + ", initialWeight='" + this.initialWeight + '\'' + ", finalWeight='" + this.finalWeight + '}';
     }
+
 }

@@ -2,7 +2,7 @@ create table belt_grade (id integer not null, color varchar(255), primary key (i
 create table category_belt_grade (id integer not null, name varchar(255), primary key (id));
 create table category_weight (id integer not null, final_weight varchar(255), initial_weight varchar(255), name varchar(255), primary key (id));
 create table country (id integer not null, name varchar(255), primary key (id));
-create table department (id integer not null, name varchar(255), primary key (id));
+create table department (id integer not null, name varchar(255), code integer not null, primary key (id));
 create table document_type (id integer not null, name varchar(255), primary key (id));
 create table location (id integer not null, address varchar(255), name varchar(255), phone_number varchar(255), primary key (id));
 create sequence belt_grade_seq start with 1 increment by 50;

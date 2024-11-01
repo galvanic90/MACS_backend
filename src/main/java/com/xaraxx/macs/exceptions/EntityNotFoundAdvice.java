@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class DepartmentNotFoundAdvice {
-    @ExceptionHandler(DepartmentNotFoundException.class)
+public class EntityNotFoundAdvice {
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String departmentNotFoundHadler(DepartmentNotFoundException exception){
+    String entityNotFoundHandler(EntityNotFoundException exception){
         return exception.getMessage();
     }
 }
