@@ -26,10 +26,12 @@ public class CombatsByChampionshipController {
         return repository.findAll();
     }
 
-    @PostMapping("/combats")
+    @PostMapping("/combat")
     public CombatsByChampionship createCombatsByChampionship(@RequestBody CombatsByChampionship newCombats){
         return repository.save(newCombats);
     }
+
+    // TO DO, CREATE METHOD THAT IMPLEMENT SAVE A BATCH OF COMBATS
 
     @GetMapping("/combats/{id}")
     public CombatsByChampionship getCombatsByChampionshipById(@PathVariable Integer id){
