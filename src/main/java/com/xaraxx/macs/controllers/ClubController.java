@@ -1,6 +1,6 @@
 package com.xaraxx.macs.controllers;
 
-import com.xaraxx.macs.DTOs.ClubDTO;
+import com.xaraxx.macs.DTOs.CreateClubDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.mappers.ClubMapper;
 import com.xaraxx.macs.models.Club;
@@ -32,7 +32,7 @@ public class ClubController {
     }
 
     @PostMapping("/club")
-    public ClubDTO createClub(@RequestBody ClubDTO newClub){
+    public CreateClubDTO createClub(@RequestBody CreateClubDTO newClub){
         Club club = clubMapper.convertToClub(newClub);
         repository.save(club);
         return newClub;

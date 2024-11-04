@@ -3,7 +3,7 @@ package com.xaraxx.macs.DTOs;
 import java.util.List;
 import java.util.Objects;
 
-public class ClubDTO {
+public class CreateClubDTO {
     private String name;
     private String email;
     private Integer municipalityId;
@@ -55,10 +55,10 @@ public class ClubDTO {
     public boolean equals(Object o){
         if (this == o)
             return true;
-        if (!(o instanceof ClubDTO clubDTO))
+        if (!(o instanceof CreateClubDTO createClubDTO))
             return false;
-        return  Objects.equals(this.name, clubDTO.name) && Objects.equals(this.email, clubDTO.email)
-                && Objects.equals(this.municipalityId, clubDTO.municipalityId) && Objects.equals(this.countryId, clubDTO.countryId) && Objects.equals(this.athletesId, clubDTO.athletesId);
+        return  Objects.equals(this.name, createClubDTO.name) && Objects.equals(this.email, createClubDTO.email)
+                && Objects.equals(this.municipalityId, createClubDTO.municipalityId) && Objects.equals(this.countryId, createClubDTO.countryId) && Objects.equals(this.athletesId, createClubDTO.athletesId);
     }
 
     @Override
