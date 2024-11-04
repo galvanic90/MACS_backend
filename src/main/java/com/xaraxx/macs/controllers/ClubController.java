@@ -1,6 +1,8 @@
 package com.xaraxx.macs.controllers;
 
+import com.xaraxx.macs.DTOs.ClubDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
+import com.xaraxx.macs.mappers.ClubMapper;
 import com.xaraxx.macs.models.Club;
 import com.xaraxx.macs.repositories.ClubRepository;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ClubController {
     @Autowired
     private final ClubRepository repository;
+    ClubMapper clubMapper;
 
-    ClubController(ClubRepository repository){
+    ClubController(ClubRepository repository, ClubMapper clubMapper){
         this.repository = repository;
+        this.clubMapper = clubMapper;
     }
 
     @GetMapping("/club")
@@ -28,8 +32,10 @@ public class ClubController {
     }
 
     @PostMapping("/club")
-    public Club createClub(@RequestBody Club newClub){
-        return repository.save(newClub);
+    public ClubDTO createClub(@RequestBody ClubDTO newClub){
+        Club club = clubMapper.convertToClub(newClub);
+        repository.save(club);
+        return newClub;
     }
 
     @GetMapping("/club/{id}")

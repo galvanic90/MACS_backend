@@ -1,11 +1,11 @@
 package com.xaraxx.macs.models;
 
 import java.util.List;
-import com.xaraxx.macs.models.Municipality;
-import com.xaraxx.macs.models.Country;
+
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Entity
