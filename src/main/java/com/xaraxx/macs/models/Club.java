@@ -2,6 +2,7 @@ package com.xaraxx.macs.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -25,7 +26,7 @@ public class Club {
     @ManyToOne
     @JoinColumn(name = "FK_country", nullable = false)
     private Country country;
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Athlete> athleteList;
 

@@ -1,6 +1,6 @@
 package com.xaraxx.macs.mappers;
 
-import com.xaraxx.macs.DTOs.CreateClubDTO;
+import com.xaraxx.macs.DTOs.ClubDTO;
 
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.Athlete;
@@ -32,8 +32,8 @@ public class ClubMapper {
     }
 
 
-    public CreateClubDTO converToClubDTO(Club club){
-        CreateClubDTO dto = new CreateClubDTO();
+    public ClubDTO converToClubDTO(Club club){
+        ClubDTO dto = new ClubDTO();
         dto.setName(club.getName());
         dto.setEmail(club.getEmail());
         dto.setMunicipalityId(club.getMunicipality().getId());
@@ -42,14 +42,14 @@ public class ClubMapper {
         return dto;
     }
 
-    public Club convertToClub(CreateClubDTO createClubDTO){
+    public Club convertToClub(ClubDTO clubDTO){
         List<Athlete> athletes = new ArrayList<Athlete>();
         Club club = new Club();
-        club.setName(createClubDTO.getName());
-        club.setEmail(createClubDTO.getEmail());
-        club.setMunicipality(municipalityRepository.findById(createClubDTO.getMunicipalityId()).orElseThrow(()-> new EntityNotFoundException(createClubDTO.getMunicipalityId())));
-        club.setCountry(countryRepository.findById(createClubDTO.getCountryId()).orElseThrow(() -> new EntityNotFoundException(createClubDTO.getCountryId())));
-        Iterator<Integer> id = createClubDTO.getAthletesId().iterator();
+        club.setName(clubDTO.getName());
+        club.setEmail(clubDTO.getEmail());
+        club.setMunicipality(municipalityRepository.findById(clubDTO.getMunicipalityId()).orElseThrow(()-> new EntityNotFoundException(clubDTO.getMunicipalityId())));
+        club.setCountry(countryRepository.findById(clubDTO.getCountryId()).orElseThrow(() -> new EntityNotFoundException(clubDTO.getCountryId())));
+        Iterator<Integer> id = clubDTO.getAthletesId().iterator();
         while (id.hasNext()){
             athletes.add(athleteRepository.findById(id.next()).orElseThrow(() -> new EntityNotFoundException(id.next())));
         }

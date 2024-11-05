@@ -1,6 +1,8 @@
 package com.xaraxx.macs.controllers;
 
+import com.xaraxx.macs.DTOs.AthleteDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
+import com.xaraxx.macs.mappers.AthleteMapper;
 import com.xaraxx.macs.models.Athlete;
 import com.xaraxx.macs.repositories.AthleteRepository;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AthleteController {
     @Autowired
     private final AthleteRepository repository;
+    @Autowired
+    private final AthleteMapper athleteMapper;
 
-    AthleteController(AthleteRepository repository){
+    AthleteController(AthleteRepository repository, AthleteMapper athleteMapper){
         this.repository = repository;
+        this.athleteMapper = athleteMapper;
     }
 
     @GetMapping("/athlete")
@@ -34,8 +39,10 @@ public class AthleteController {
     }
 
     @PostMapping("/athlete")
-    public Athlete createAthlete(@RequestBody Athlete newAthlete){
-        return repository.save(newAthlete);
+    public AthleteDTO createAthlete(@RequestBody AthleteDTO newAthlete){
+        Athlete athlete = athleteMapper.convertToAthlete(newAthlete);
+        repository.save(athlete);
+        return newAthlete;
     }
 
     @PutMapping("/athlete/{id}")
