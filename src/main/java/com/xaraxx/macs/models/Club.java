@@ -1,12 +1,8 @@
 package com.xaraxx.macs.models;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Optional;
 
 
 @Entity
@@ -26,17 +22,6 @@ public class Club {
     @ManyToOne
     @JoinColumn(name = "FK_country", nullable = false)
     private Country country;
-    @JsonManagedReference
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Athlete> athleteList;
-
-    public List<Athlete> getAthleteList() {
-        return athleteList;
-    }
-
-    public void setAthleteList(List<Athlete> athleteList) {
-        this.athleteList = athleteList;
-    }
 
     public Integer getId() {
         return id;
@@ -85,12 +70,12 @@ public class Club {
         if (!(o instanceof Club club))
             return false;
         return Objects.equals(this.id, club.id) && Objects.equals(this.name, club.name) && Objects.equals(this.email, club.email)
-                && Objects.equals(this.municipality, club.municipality) && Objects.equals(this.country, club.country) && Objects.equals(this.athleteList, club.athleteList);
+                && Objects.equals(this.municipality, club.municipality) && Objects.equals(this.country, club.country);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name, this.email, this.municipality, this.country, this.athleteList);
+        return Objects.hash(this.id, this.name, this.email, this.municipality, this.country);
     }
     @Override
     public String toString() {
@@ -100,7 +85,6 @@ public class Club {
                 ", email='" + this.email + '\'' +
                 ", municipality=" + this.municipality + '\'' +
                 ", country=" + this.country + '\'' +
-                ", athletes=" + this.athleteList + '\'' +
                 '}';
     }
 }
