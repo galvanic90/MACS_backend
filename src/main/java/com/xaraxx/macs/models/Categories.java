@@ -2,24 +2,25 @@ package com.xaraxx.macs.models;
 
 import java.util.Objects;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Categories {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-
+    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Gender sex;
-
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_category_weight")
     private CategoryWeight categoryWeight;
-
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_category_belt_grade")
     private CategoryBeltGrade categoryBeltGrade;
-
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_category_age")
     private CategoryAge categoryAge;
