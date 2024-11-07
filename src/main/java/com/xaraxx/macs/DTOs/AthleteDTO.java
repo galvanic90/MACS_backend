@@ -9,17 +9,20 @@ import java.util.Objects;
 public class AthleteDTO {
     @NotNull
     private String name;
-    @NotNull(message = "Apellido es requerido")
+    @NotNull
     private String lastName;
     private String idNumber;
     private Gender sex;
     private String birthDate;
     private double weight;
     private String pictureUrl;
-    @NotNull(message = "Id del club es requerido")
+    @NotNull
     private Integer clubId;
+    @NotNull
     private Integer documentTypeId;
+    @NotNull
     private Integer beltId;
+    @NotNull
     private Integer countryId;
 
     public String getName() {
