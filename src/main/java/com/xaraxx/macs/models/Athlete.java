@@ -1,5 +1,4 @@
 package com.xaraxx.macs.models;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -17,7 +16,6 @@ public class Athlete {
     private String birthDate;
     private double weight;
     private String pictureUrl;
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="FK_club", referencedColumnName = "id")
     private Club club;
