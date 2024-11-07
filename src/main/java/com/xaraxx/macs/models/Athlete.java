@@ -1,5 +1,4 @@
 package com.xaraxx.macs.models;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -25,7 +24,6 @@ public class Athlete {
     private double weight;
     private String pictureUrl;
     @NotNull
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="FK_club", referencedColumnName = "id")
     private Club club;

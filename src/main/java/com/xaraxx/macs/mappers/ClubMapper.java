@@ -38,22 +38,15 @@ public class ClubMapper {
         dto.setEmail(club.getEmail());
         dto.setMunicipalityId(club.getMunicipality().getId());
         dto.setCountryId(club.getCountry().getId());
-        dto.setAthletesId(club.getAthleteList().stream().map(Athlete::getId).collect(Collectors.toList()));
         return dto;
     }
 
     public Club convertToClub(ClubDTO clubDTO){
-        List<Athlete> athletes = new ArrayList<Athlete>();
         Club club = new Club();
         club.setName(clubDTO.getName());
         club.setEmail(clubDTO.getEmail());
         club.setMunicipality(municipalityRepository.findById(clubDTO.getMunicipalityId()).orElseThrow(()-> new EntityNotFoundException(clubDTO.getMunicipalityId())));
         club.setCountry(countryRepository.findById(clubDTO.getCountryId()).orElseThrow(() -> new EntityNotFoundException(clubDTO.getCountryId())));
-        Iterator<Integer> id = clubDTO.getAthletesId().iterator();
-        while (id.hasNext()){
-            athletes.add(athleteRepository.findById(id.next()).orElseThrow(() -> new EntityNotFoundException(id.next())));
-        }
-        club.setAthleteList(athletes);
 
         return club;
     }

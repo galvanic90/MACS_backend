@@ -32,10 +32,9 @@ public class ClubController {
     }
 
     @PostMapping("/club")
-    public ClubDTO createClub(@RequestBody ClubDTO newClub){
+    public Club createClub(@RequestBody ClubDTO newClub){
         Club club = clubMapper.convertToClub(newClub);
-        repository.save(club);
-        return newClub;
+        return repository.save(club);
     }
 
     @GetMapping("/club/{id}")
@@ -50,7 +49,6 @@ public class ClubController {
                     club.setEmail(newClub.getEmail());
                     club.setCountry(newClub.getCountry());
                     club.setMunicipality(newClub.getMunicipality());
-                    club.setAthleteList(newClub.getAthleteList());
                     return repository.save(club);
                 })
                 .orElseGet(() ->{
