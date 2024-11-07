@@ -1,5 +1,6 @@
 package com.xaraxx.macs.models;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -8,23 +9,33 @@ public class Athlete {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+    @NotNull
     private String name;
+    @NotNull
     private String lastName;
+    @NotNull
     private String idNumber;
+    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Gender sex;
+    @NotNull
     private String birthDate;
+    @NotNull
     private double weight;
     private String pictureUrl;
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_club", referencedColumnName = "id")
     private Club club;
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_document_type")
     private DocumentType documentType;
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_belt_grade")
     private BeltGrade belt;
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_country")
     private Country homeland;

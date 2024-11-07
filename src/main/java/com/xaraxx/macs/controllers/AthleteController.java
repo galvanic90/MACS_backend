@@ -40,31 +40,16 @@ public class AthleteController {
     }
 
     @PostMapping("/athlete")
-    public AthleteDTO createAthlete(@Valid @RequestBody AthleteDTO newAthlete){
+    public Athlete createAthlete(@Valid @RequestBody AthleteDTO newAthlete){
         Athlete athlete = athleteMapper.convertToAthlete(newAthlete);
-        repository.save(athlete);
-        return newAthlete;
+        return repository.save(athlete);
     }
 
     @PutMapping("/athlete/{id}")
-    public Athlete updateAthleteById(@RequestBody Athlete newAthlete, @PathVariable Integer id){
-        return repository.findById(id)
-                .map((athlete)->{athlete.setName(newAthlete.getName());
-                    athlete.setLastName(newAthlete.getLastName());
-                    athlete.setIdNumber(newAthlete.getIdNumber());
-                    athlete.setSex(newAthlete.getSex());
-                    athlete.setBirthDate(newAthlete.getBirthDate());
-                    athlete.setPictureUrl(newAthlete.getPictureUrl());
-                    athlete.setWeight(newAthlete.getWeight());
-                    athlete.setClub(newAthlete.getClub());
-                    athlete.setDocumentType(newAthlete.getDocumentType());
-                    athlete.setBelt(newAthlete.getBelt());
-                    athlete.setHomeland(newAthlete.getHomeland());
-                    return repository.save(athlete);
-                })
-                .orElseGet(()->{
-                    return repository.save(newAthlete);
-                });
+    public Athlete updateAthleteById(@RequestBody AthleteDTO newAthlete, @PathVariable Integer id){
+        Athlete athlete = athleteMapper.convertToAthlete(newAthlete);
+        athlete.setId(id);
+        return repository.save(athlete);
     }
 
     @DeleteMapping("/athlete/{id}")

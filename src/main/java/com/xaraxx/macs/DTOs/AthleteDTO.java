@@ -11,9 +11,12 @@ public class AthleteDTO {
     private String name;
     @NotNull
     private String lastName;
+    @NotNull
     private String idNumber;
     private Gender sex;
+    @NotNull
     private String birthDate;
+    @NotNull
     private double weight;
     private String pictureUrl;
     @NotNull
