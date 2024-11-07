@@ -1,6 +1,7 @@
 package com.xaraxx.macs.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -9,18 +10,24 @@ public class Athlete {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+    @NotNull
     private String name;
+    @NotNull
     private String lastName;
+    @NotNull
     private String idNumber;
     @Enumerated(EnumType.ORDINAL)
     private Gender sex;
+    @NotNull
     private String birthDate;
+    @NotNull
     private double weight;
     private String pictureUrl;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="FK_club", referencedColumnName = "id")
     private Club club;
+
     @ManyToOne
     @JoinColumn(name="FK_document_type")
     private DocumentType documentType;
