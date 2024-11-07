@@ -1,5 +1,7 @@
 package com.xaraxx.macs.controllers;
+import com.xaraxx.macs.DTOs.CategoriesDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
+import com.xaraxx.macs.mappers.CategoriesMapper;
 import com.xaraxx.macs.models.Categories;
 import com.xaraxx.macs.repositories.CategoriesRepository;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CategoriesController {
     @Autowired
     private final CategoriesRepository repository;
+    @Autowired
+    private final CategoriesMapper categoriesMapper;
 
-    CategoriesController(CategoriesRepository repository){
+    CategoriesController(CategoriesRepository repository, CategoriesMapper categoriesMapper){
         this.repository = repository;
+        this.categoriesMapper = categoriesMapper;
     }
 
     @GetMapping("/categories")
@@ -27,8 +32,9 @@ public class CategoriesController {
     }
 
     @PostMapping("/categories")
-    public Categories createCategories(@RequestBody Categories newCategory){
-        return repository.save(newCategory);
+    public Categories createCategories(@RequestBody CategoriesDTO newCategory){
+        Categories categories = categoriesMapper.convertToCategories(newCategory);
+        return repository.save(categories);
     }
 
     @GetMapping("/categories/{id}")
