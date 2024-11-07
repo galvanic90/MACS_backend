@@ -5,6 +5,7 @@ import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.mappers.AthleteMapper;
 import com.xaraxx.macs.models.Athlete;
 import com.xaraxx.macs.repositories.AthleteRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class AthleteController {
     }
 
     @PostMapping("/athlete")
-    public AthleteDTO createAthlete(@RequestBody AthleteDTO newAthlete){
+    public AthleteDTO createAthlete(@Valid @RequestBody AthleteDTO newAthlete){
         Athlete athlete = athleteMapper.convertToAthlete(newAthlete);
         repository.save(athlete);
         return newAthlete;

@@ -1,18 +1,22 @@
 package com.xaraxx.macs.DTOs;
 
 import com.xaraxx.macs.models.Gender;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
 
 public class AthleteDTO {
+    @NotNull
     private String name;
+    @NotNull(message = "Apellido es requerido")
     private String lastName;
     private String idNumber;
     private Gender sex;
     private String birthDate;
     private double weight;
     private String pictureUrl;
+    @NotNull(message = "Id del club es requerido")
     private Integer clubId;
     private Integer documentTypeId;
     private Integer beltId;
