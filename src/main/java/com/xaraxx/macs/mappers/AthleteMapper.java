@@ -53,7 +53,7 @@ public class AthleteMapper {
         athlete.setBirthDate(athleteDTO.getBirthDate());
         athlete.setWeight(athleteDTO.getWeight());
         athlete.setPictureUrl(athleteDTO.getPictureUrl());
-        athlete.setClub(clubRepository.findById(athleteDTO.getClubId()).orElseThrow(() -> new EntityNotFoundException(athlete.getClub().getId())));
+        athlete.setClub(clubRepository.findById(athleteDTO.getClubId()).orElseThrow(() -> new EntityNotFoundException("Club not found")));
         athlete.setDocumentType(documentTypeRepository.findById(athleteDTO.getDocumentTypeId()).orElseThrow(() -> new EntityNotFoundException(athlete.getDocumentType().getId())));
         athlete.setBelt(beltGradeRepository.findById(athleteDTO.getBeltId()).orElseThrow(() -> new EntityNotFoundException(athlete.getBelt().getId())));
         athlete.setHomeland(countryRepository.findById(athleteDTO.getCountryId()).orElseThrow(() -> new EntityNotFoundException(athlete.getHomeland().getId())));
