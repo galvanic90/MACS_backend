@@ -23,17 +23,20 @@ public class Athlete {
     @NotNull
     private double weight;
     private String pictureUrl;
+    @NotNull
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="FK_club", referencedColumnName = "id")
     private Club club;
-
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_document_type")
     private DocumentType documentType;
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_belt_grade")
     private BeltGrade belt;
+    @NotNull
     @ManyToOne
     @JoinColumn(name="FK_country")
     private Country homeland;
