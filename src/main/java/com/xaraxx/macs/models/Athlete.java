@@ -16,6 +16,7 @@ public class Athlete {
     private String lastName;
     @NotNull
     private String idNumber;
+    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Gender sex;
     @NotNull

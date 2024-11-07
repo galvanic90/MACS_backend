@@ -53,10 +53,10 @@ public class AthleteMapper {
         athlete.setBirthDate(athleteDTO.getBirthDate());
         athlete.setWeight(athleteDTO.getWeight());
         athlete.setPictureUrl(athleteDTO.getPictureUrl());
-        athlete.setClub(clubRepository.findById(athleteDTO.getClubId()).orElseThrow(() -> new EntityNotFoundException("Club not found")));
-        athlete.setDocumentType(documentTypeRepository.findById(athleteDTO.getDocumentTypeId()).orElseThrow(() -> new EntityNotFoundException(athlete.getDocumentType().getId())));
-        athlete.setBelt(beltGradeRepository.findById(athleteDTO.getBeltId()).orElseThrow(() -> new EntityNotFoundException(athlete.getBelt().getId())));
-        athlete.setHomeland(countryRepository.findById(athleteDTO.getCountryId()).orElseThrow(() -> new EntityNotFoundException(athlete.getHomeland().getId())));
+        athlete.setClub(clubRepository.findById(athleteDTO.getClubId()).orElseThrow(() -> new EntityNotFoundException("Club not found " + athleteDTO.getClubId())));
+        athlete.setDocumentType(documentTypeRepository.findById(athleteDTO.getDocumentTypeId()).orElseThrow(() -> new EntityNotFoundException("Document type not found id" + athleteDTO.getDocumentTypeId())));
+        athlete.setBelt(beltGradeRepository.findById(athleteDTO.getBeltId()).orElseThrow(() -> new EntityNotFoundException("Belt not found" + athleteDTO.getBeltId())));
+        athlete.setHomeland(countryRepository.findById(athleteDTO.getCountryId()).orElseThrow(() -> new EntityNotFoundException("Country not found" + athleteDTO.getCountryId())));
         return athlete;
     }
 
