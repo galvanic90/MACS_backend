@@ -5,6 +5,7 @@ import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.mappers.ClubMapper;
 import com.xaraxx.macs.models.Club;
 import com.xaraxx.macs.repositories.ClubRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +33,7 @@ public class ClubController {
     }
 
     @PostMapping("/club")
-    public Club createClub(@RequestBody ClubDTO newClub){
+    public Club createClub(@Valid @RequestBody ClubDTO newClub){
         Club club = clubMapper.convertToClub(newClub);
         return repository.save(club);
     }
@@ -43,17 +44,10 @@ public class ClubController {
                 .orElseThrow(() -> new EntityNotFoundException(id));
     }
     @PutMapping("/club/{id}")
-    public Club updateClubById(@RequestBody Club newClub, @PathVariable Integer id){
-        return repository.findById(id)
-                .map(club -> {club.setName(newClub.getName());
-                    club.setEmail(newClub.getEmail());
-                    club.setCountry(newClub.getCountry());
-                    club.setMunicipality(newClub.getMunicipality());
-                    return repository.save(club);
-                })
-                .orElseGet(() ->{
-                    return repository.save(newClub);
-                });
+    public Club updateClubById(@RequestBody ClubDTO newClub, @PathVariable Integer id){
+        Club club = clubMapper.convertToClub(newClub);
+        club.setId(id);
+        return repository.save(club);
     }
 
     @DeleteMapping("/club/{id}")
