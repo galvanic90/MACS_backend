@@ -44,17 +44,10 @@ public class ClubController {
                 .orElseThrow(() -> new EntityNotFoundException(id));
     }
     @PutMapping("/club/{id}")
-    public Club updateClubById(@RequestBody Club newClub, @PathVariable Integer id){
-        return repository.findById(id)
-                .map(club -> {club.setName(newClub.getName());
-                    club.setEmail(newClub.getEmail());
-                    club.setCountry(newClub.getCountry());
-                    club.setMunicipality(newClub.getMunicipality());
-                    return repository.save(club);
-                })
-                .orElseGet(() ->{
-                    return repository.save(newClub);
-                });
+    public Club updateClubById(@RequestBody ClubDTO newClub, @PathVariable Integer id){
+        Club club = clubMapper.convertToClub(newClub);
+        club.setId(id);
+        return repository.save(club);
     }
 
     @DeleteMapping("/club/{id}")
