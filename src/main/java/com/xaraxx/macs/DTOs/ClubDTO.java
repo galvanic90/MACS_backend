@@ -1,12 +1,16 @@
 package com.xaraxx.macs.DTOs;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 import java.util.Objects;
 
 public class ClubDTO {
     private String name;
     private String email;
+    @NotNull
     private Integer municipalityId;
+    @NotNull
     private Integer countryId;
     private List<Integer> athletesId;
 
