@@ -1,12 +1,12 @@
 package com.xaraxx.macs.controllers;
 
+import com.xaraxx.macs.DTOs.AssociateCategoryDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
-import com.xaraxx.macs.models.CategoriesByChampionship;
+import com.xaraxx.macs.models.*;
 import com.xaraxx.macs.repositories.CategoriesByChampionshipRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +33,21 @@ public class CategoriesByChampioshipController {
     }
 
     @PostMapping("/categ-champ")
-    public CategoriesByChampionship createCategoriesByChampionship(@RequestBody CategoriesByChampionship newCategoriesByChampionship){
+    public CategoriesByChampionship createCategoriesByChampionship(@RequestBody AssociateCategoryDTO categoriesByChampionship){
+        CategoriesByChampionship newCategoriesByChampionship = new CategoriesByChampionship();
+        Championship championship = new Championship();
+        championship.setId(categoriesByChampionship.getChampionship());
+        CategoryAge categoryAge = new CategoryAge();
+        categoryAge.setId(categoriesByChampionship.getAge());
+        CategoryWeight categoryWeight = new CategoryWeight();
+        categoryWeight.setId(categoriesByChampionship.getWeight());
+        CategoryBeltGrade categoryBeltGrade = new CategoryBeltGrade();
+        categoryBeltGrade.setId(categoriesByChampionship.getBelt());
+        newCategoriesByChampionship.setChampionship(championship);
+        newCategoriesByChampionship.setCategoriesAge(categoryAge);
+        newCategoriesByChampionship.setCategoriesWeight(categoryWeight);
+        newCategoriesByChampionship.setSex(categoriesByChampionship.getSex());
+        newCategoriesByChampionship.setCategoriesBeltGrade(categoryBeltGrade);
         return repository.save(newCategoriesByChampionship);
     }
 
@@ -41,19 +55,6 @@ public class CategoriesByChampioshipController {
     public CategoriesByChampionship getCategoriesByChampionshipById(@PathVariable Integer id){
         return repository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException(id));
-    }
-
-    @PutMapping("/categ-champ/{id}")
-    public CategoriesByChampionship updateCategoriesByChampionship(@RequestBody CategoriesByChampionship newCategoriesByChampionship, @PathVariable Integer id){
-        return repository.findById(id)
-                .map((categories)->{categories.setChampionship(newCategoriesByChampionship.getChampionship());
-                    categories.setCategory(newCategoriesByChampionship.getCategory());
-                    return repository.save(categories);
-                })
-                .orElseGet(()->{
-                    return repository.save(newCategoriesByChampionship);
-                });
-
     }
 
     @DeleteMapping("/categ-champ/{id}")
