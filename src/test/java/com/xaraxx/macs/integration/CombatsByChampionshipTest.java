@@ -19,7 +19,7 @@ public class CombatsByChampionshipTest {
     @Test
     void createCombats() {
         CombatByCategoryDTO combatByCategoryDTO = new CombatByCategoryDTO();
-        combatByCategoryDTO.setCategory(2);
+        combatByCategoryDTO.setCategory(103);
         combatsByChampionshipController.createCombatsByCategory(combatByCategoryDTO);
     }
 

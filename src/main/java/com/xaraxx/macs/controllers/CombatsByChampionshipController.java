@@ -62,9 +62,9 @@ public class CombatsByChampionshipController {
             System.out.println(byePosition);
         }
         List<Integer> combatPositions = getRemainingNumbers(numParticipants-1, new HashSet<>(byePosition));
-        for(int i = 0; i< byePosition.size(); i++) {
+        for (Integer position : byePosition) {
             CombatsByChampionship combatsByChampionship = new CombatsByChampionship();
-            combatsByChampionship.setWinner(participants.get(i));
+            combatsByChampionship.setWinner(participants.get(position));
             combatsByChampionship.setFeedIn(true);
             combatsByChampionship.setCategoriesByChampionship(category);
             combatsByChampionship.setRound(1);
