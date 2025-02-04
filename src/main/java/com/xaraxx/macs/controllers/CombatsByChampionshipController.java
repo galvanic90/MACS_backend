@@ -1,4 +1,8 @@
 package com.xaraxx.macs.controllers;
+import com.xaraxx.macs.DTOs.combat.FeedInDTO;
+import com.xaraxx.macs.DTOs.combat.MatchDTO;
+import com.xaraxx.macs.DTOs.combat.RoundDTO;
+import com.xaraxx.macs.DTOs.combat.TeamDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.CombatsByChampionship;
 import com.xaraxx.macs.repositories.CombatsByChampionshipRepository;
@@ -11,6 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @RestController
 public class CombatsByChampionshipController {
@@ -58,5 +70,40 @@ public class CombatsByChampionshipController {
     @DeleteMapping("/combats/{id}")
     public void deleteCombatsByChampionship(@PathVariable Integer id){
         repository.deleteById(id);
+    }
+
+    @GetMapping("/pyramid/{championshipId}")
+    public @ResponseBody Iterable<RoundDTO> pyramid(@PathVariable Integer championshipId){
+        Integer numberOfRounds = repository.numberOfRounds(championshipId).orElseThrow(()-> new EntityNotFoundException("Provided championship does not have combats"));
+        List<RoundDTO> rounds = new ArrayList<>();
+        for(int i = 1; i <= numberOfRounds; i++) {
+            RoundDTO round = new RoundDTO();
+            List<CombatsByChampionship> combatsByChampionships = repository.findByCategoriesByChampionship_idAndRoundOrderByIdAsc(championshipId, i);
+            List<MatchDTO> matches = combatsByChampionships.stream().map(combatByChampionship -> {
+                MatchDTO matchDTO = new MatchDTO();
+                matchDTO.setId(combatByChampionship.getId().toString());
+                if(combatByChampionship.isFeedIn()) {
+                    FeedInDTO feedInDTO = new FeedInDTO();
+                    feedInDTO.setName("Paso directo");
+                    feedInDTO.setId(combatByChampionship.getId().toString());
+                    matchDTO.setTitle("By");
+                    matchDTO.setFeedIn(feedInDTO);
+                } else {
+                    TeamDTO team1 = new TeamDTO();
+                    matchDTO.setTitle("# " + combatByChampionship.getCombatNumber());
+                    team1.setId(combatByChampionship.getCombatNumber() + "Team1");
+                    team1.setName(combatByChampionship.getCombatNumber() + "Team1");
+                    TeamDTO team2 = new TeamDTO();
+                    team2.setId(combatByChampionship.getCombatNumber() + "Team2");
+                    team2.setName(combatByChampionship.getCombatNumber() + "Team2");
+                    matchDTO.setTeam1(team1);
+                    matchDTO.setTeam2(team2);
+                }
+                return matchDTO;
+            }).toList();
+            round.setMatchs(matches);
+            rounds.add(round);
+        }
+        return rounds;
     }
 }
