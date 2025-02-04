@@ -43,19 +43,6 @@ public class CategoriesByChampioshipController {
                 .orElseThrow(()-> new EntityNotFoundException(id));
     }
 
-    @PutMapping("/categ-champ/{id}")
-    public CategoriesByChampionship updateCategoriesByChampionship(@RequestBody CategoriesByChampionship newCategoriesByChampionship, @PathVariable Integer id){
-        return repository.findById(id)
-                .map((categories)->{categories.setChampionship(newCategoriesByChampionship.getChampionship());
-                    categories.setCategory(newCategoriesByChampionship.getCategory());
-                    return repository.save(categories);
-                })
-                .orElseGet(()->{
-                    return repository.save(newCategoriesByChampionship);
-                });
-
-    }
-
     @DeleteMapping("/categ-champ/{id}")
     public void deleteCategoriesByChampionshipById(@PathVariable Integer id){
         repository.deleteById(id);
