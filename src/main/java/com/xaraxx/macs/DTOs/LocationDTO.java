@@ -3,7 +3,7 @@ package com.xaraxx.macs.DTOs;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
-public class LocationDTO {
+public class  LocationDTO {
     private String name;
     private String address;
     private String phoneNumber;
