@@ -1,5 +1,8 @@
 package com.xaraxx.macs.controllers;
+import com.xaraxx.macs.DTOs.RegistrationDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
+import com.xaraxx.macs.models.Athlete;
+import com.xaraxx.macs.models.CategoriesByChampionship;
 import com.xaraxx.macs.models.RegistrationsByChampionship;
 import com.xaraxx.macs.repositories.RegistrationsByChampionshipRepository;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,9 +37,20 @@ public class RegistrationsByChampionshipController {
     }
 
     @PostMapping("/registrations")
-    public RegistrationsByChampionship createRegistrationsByChampionship(@RequestBody RegistrationsByChampionship newRegistrations){
-        return repository.save(newRegistrations);
+    public void createRegistrationsByChampionship(@RequestBody RegistrationDTO newRegistrations){
+        CategoriesByChampionship categoriesByChampionship = new CategoriesByChampionship();
+        categoriesByChampionship.setId(newRegistrations.getCategory());
+        for(Integer athleteId: newRegistrations.getAthletes()) {
+            RegistrationsByChampionship registration = new RegistrationsByChampionship();
+            registration.setCategoriesByChampionship(categoriesByChampionship);
+            Athlete athlete = new Athlete();
+            athlete.setId(athleteId);
+            registration.setAthlete(athlete);
+            repository.save(registration);
+        }
+
     }
+
 
     @GetMapping("/registrations/{id}")
     public RegistrationsByChampionship getRegistrationByChampionshipById(@PathVariable Integer id){

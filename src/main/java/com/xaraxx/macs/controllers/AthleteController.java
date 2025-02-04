@@ -33,11 +33,17 @@ public class AthleteController {
         return repository.findAll();
     }
 
+    @GetMapping("/club/{club}/athlete")
+    public @ResponseBody Iterable<Athlete> getByClub(@PathVariable Integer club){
+        return repository.findByClub_id(club);
+    }
+
     @GetMapping("/athlete/{id}")
     public Athlete getAthleteById(@PathVariable Integer id){
         return repository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException(id));
     }
+
 
     @PostMapping("/athlete")
     public Athlete createAthlete(@Valid @RequestBody AthleteDTO newAthlete){
