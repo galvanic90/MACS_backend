@@ -1,8 +1,9 @@
 package com.xaraxx.macs.mappers;
 
-import com.xaraxx.macs.DTOs.CategoriesDTO;
+import com.xaraxx.macs.DTOs.AssociateCategoryDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
-import com.xaraxx.macs.models.Categories;
+import com.xaraxx.macs.models.CategoriesByChampionship;
+import com.xaraxx.macs.models.Championship;
 import com.xaraxx.macs.repositories.CategoryAgeRepository;
 import com.xaraxx.macs.repositories.CategoryBeltGradeRepository;
 import com.xaraxx.macs.repositories.CategoryWeightRepository;
@@ -24,21 +25,25 @@ public class CategoriesMapper {
         this.categoryAgeRepository = categoryAgeRepository;
     }
 
-    public CategoriesDTO convertToCategoriesDTO(Categories categories){
-        CategoriesDTO dto = new CategoriesDTO();
+    public AssociateCategoryDTO convertToAssociateCategoryDTO(CategoriesByChampionship categories){
+        AssociateCategoryDTO dto = new AssociateCategoryDTO();
+        dto.setChampionship(categories.getChampionship().getId());
         dto.setSex(categories.getSex());
-        dto.setCategoriesWeightId(categories.getCategoriesWeight().getId());
-        dto.setCategoriesBeltGradeId(categories.getCategoriesBeltGrade().getId());
-        dto.setCategoriesAgeId(categories.getCategoriesAge().getId());
+        dto.setWeight(categories.getCategoriesWeight().getId());
+        dto.setBelt(categories.getCategoriesBeltGrade().getId());
+        dto.setAge(categories.getCategoriesAge().getId());
         return dto;
     }
 
-    public Categories convertToCategories(CategoriesDTO categoriesDTO){
-        Categories categories = new Categories();
+    public CategoriesByChampionship convertToCategoriesByChampionship(AssociateCategoryDTO categoriesDTO){
+        CategoriesByChampionship categories = new CategoriesByChampionship();
+        Championship championship = new Championship();
+        championship.setId(categoriesDTO.getChampionship());
+        categories.setChampionship(championship);
         categories.setSex(categoriesDTO.getSex());
-        categories.setCategoriesWeight(categoryWeightRepository.findById(categoriesDTO.getCategoriesWeightId()).orElseThrow(()-> new EntityNotFoundException("Category weight not found")));
-        categories.setCategoriesBeltGrade(categoryBeltGradeRepository.findById(categoriesDTO.getCategoriesBeltGradeId()).orElseThrow(()-> new EntityNotFoundException("Category Belt grade not found")));
-        categories.setCategoriesAge(categoryAgeRepository.findById(categoriesDTO.getCategoriesAgeId()).orElseThrow(()-> new EntityNotFoundException(("Category age not found"))));
+        categories.setCategoriesWeight(categoryWeightRepository.findById(categoriesDTO.getBelt()).orElseThrow(()-> new EntityNotFoundException("Category weight not found")));
+        categories.setCategoriesBeltGrade(categoryBeltGradeRepository.findById(categoriesDTO.getBelt()).orElseThrow(()-> new EntityNotFoundException("Category Belt grade not found")));
+        categories.setCategoriesAge(categoryAgeRepository.findById(categoriesDTO.getAge()).orElseThrow(()-> new EntityNotFoundException(("Category age not found"))));
         return categories;
     }
 }
