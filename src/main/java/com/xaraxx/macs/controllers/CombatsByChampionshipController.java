@@ -37,7 +37,7 @@ public class CombatsByChampionshipController {
         this.registrationRepository = registrationRepository;
     }
 
-    @GetMapping("/combats")
+    @GetMapping("/combat")
     public @ResponseBody Iterable<CombatsByChampionship> getAllCombatsByChampionship(){
         return repository.findAll();
     }
@@ -48,21 +48,27 @@ public class CombatsByChampionshipController {
 
     // TO DO, CREATE METHOD THAT IMPLEMENT SAVE A BATCH OF COMBATS
 
-    @GetMapping("/combats/{id}")
+    @GetMapping("/combat/{id}")
     public CombatsByChampionship getCombatsByChampionshipById(@PathVariable Integer id){
         return repository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException(id));
     }
 
-    @PutMapping("/combats/{id}")
+    @PutMapping("/combat/{id}")
     public CombatsByChampionship updateCombatsByChampionship(@RequestBody UpdateCombatDTO newCombats, @PathVariable Integer id){
         return repository.findById(id)
                 .map((combats)->{
                     combats.setPointsBlue(newCombats.getPointsBlue());
                     combats.setPointsRed(newCombats.getPointsRed());
-                    registrationRepository.findById(newCombats.getAthleteBlue()).ifPresent(combats::setAthleteBlue);
-                    registrationRepository.findById(newCombats.getAthleteRed()).ifPresent(combats::setAthleteRed);
-                    registrationRepository.findById(newCombats.getWinner()).ifPresent(combats::setWinner);
+                    if(newCombats.getAthleteBlue()!= null) {
+                        registrationRepository.findById(newCombats.getAthleteBlue()).ifPresent(combats::setAthleteBlue);
+                    }
+                    if(newCombats.getAthleteRed()!=null) {
+                        registrationRepository.findById(newCombats.getAthleteRed()).ifPresent(combats::setAthleteRed);
+                    }
+                    if(newCombats.getWinner()!=null) {
+                        registrationRepository.findById(newCombats.getWinner()).ifPresent(combats::setWinner);
+                    }
                     return repository.save(combats);
                 })
                 .orElseThrow(()-> new EntityNotFoundException("Combat %s not found".formatted(id)));
