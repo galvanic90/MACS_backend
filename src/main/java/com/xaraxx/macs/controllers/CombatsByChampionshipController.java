@@ -2,6 +2,7 @@ package com.xaraxx.macs.controllers;
 import com.xaraxx.macs.DTOs.UpdateCombatDTO;
 import com.xaraxx.macs.DTOs.combat.*;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
+import com.xaraxx.macs.models.CategoriesByChampionship;
 import com.xaraxx.macs.models.CombatsByChampionship;
 import com.xaraxx.macs.models.RegistrationsByChampionship;
 import com.xaraxx.macs.repositories.CombatsByChampionshipRepository;
@@ -10,19 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.*;
 
 @RestController
 public class CombatsByChampionshipController {
@@ -43,7 +37,70 @@ public class CombatsByChampionshipController {
     }
 
     @PostMapping("/combat")
-    public void createCombatsByCategory(@RequestBody CombatByCategoryDTO newCombats){
+    public void createCombatsByCategory(@RequestBody CombatByCategoryDTO newCombats) {
+        CategoriesByChampionship category = new CategoriesByChampionship();
+        category.setId(newCombats.getCategory());
+        List<RegistrationsByChampionship> participants = registrationRepository.findByCategoriesByChampionship_id(newCombats.getCategory());
+        int numParticipants = participants.size();
+        int nextPowerOf2 = 1;
+        int rounds = 0;
+        while (nextPowerOf2 < numParticipants) {
+            nextPowerOf2 *= 2;
+            rounds++;
+        }
+        int byes = nextPowerOf2 - numParticipants;
+
+        System.out.println("Participantes: " + numParticipants);
+        System.out.println("Byes: " + byes);
+        System.out.println("Rounds: " + rounds);
+        List<Integer> byePosition = new ArrayList<>(byes);
+        if(byes> 0) {
+            int interval = numParticipants/byes;
+            for(int i = 0; i< byes; i++) {
+                byePosition.add(i*interval);
+            }
+            System.out.println(byePosition);
+        }
+        List<Integer> combatPositions = getRemainingNumbers(numParticipants-1, new HashSet<>(byePosition));
+        for(int i = 0; i< byePosition.size(); i++) {
+            CombatsByChampionship combatsByChampionship = new CombatsByChampionship();
+            combatsByChampionship.setWinner(participants.get(i));
+            combatsByChampionship.setFeedIn(true);
+            combatsByChampionship.setCategoriesByChampionship(category);
+            combatsByChampionship.setRound(1);
+            repository.save(combatsByChampionship);
+
+        }
+        for (int i = 0; i < combatPositions.size() ; i += 2) {
+            CombatsByChampionship combatsByChampionship = new CombatsByChampionship();
+            combatsByChampionship.setCategoriesByChampionship(category);
+            combatsByChampionship.setRound(1);
+            combatsByChampionship.setAthleteBlue(participants.get(combatPositions.get(i)));
+            combatsByChampionship.setAthleteRed(participants.get(combatPositions.get(i+1)));
+            combatsByChampionship.setFeedIn(false);
+            repository.save(combatsByChampionship);
+        }
+        int combatsInRound = nextPowerOf2/2;
+        for(int round = 2; round <= rounds; round++){
+            combatsInRound = combatsInRound/2;
+            for(int i = 0; i < combatsInRound; i++) {
+                System.out.println("Round: "+ round);
+                CombatsByChampionship combatsByChampionship = new CombatsByChampionship();
+                combatsByChampionship.setCategoriesByChampionship(category);
+                combatsByChampionship.setRound(round);
+                repository.save(combatsByChampionship);
+            }
+        }
+    }
+
+    public static List<Integer> getRemainingNumbers(int n, Set<Integer> skipSet) {
+        List<Integer> remainingNumbers = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            if (!skipSet.contains(i)) {
+                remainingNumbers.add(i);
+            }
+        }
+        return remainingNumbers;
     }
 
     // TO DO, CREATE METHOD THAT IMPLEMENT SAVE A BATCH OF COMBATS
