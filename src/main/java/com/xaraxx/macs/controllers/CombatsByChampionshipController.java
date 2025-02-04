@@ -1,11 +1,11 @@
 package com.xaraxx.macs.controllers;
-import com.xaraxx.macs.DTOs.combat.FeedInDTO;
-import com.xaraxx.macs.DTOs.combat.MatchDTO;
-import com.xaraxx.macs.DTOs.combat.RoundDTO;
-import com.xaraxx.macs.DTOs.combat.TeamDTO;
+import com.xaraxx.macs.DTOs.UpdateCombatDTO;
+import com.xaraxx.macs.DTOs.combat.*;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
 import com.xaraxx.macs.models.CombatsByChampionship;
+import com.xaraxx.macs.models.RegistrationsByChampionship;
 import com.xaraxx.macs.repositories.CombatsByChampionshipRepository;
+import com.xaraxx.macs.repositories.RegistrationsByChampionshipRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +28,13 @@ import java.util.stream.StreamSupport;
 public class CombatsByChampionshipController {
     @Autowired
     private final CombatsByChampionshipRepository repository;
+    @Autowired
+    private final RegistrationsByChampionshipRepository registrationRepository;
 
-    CombatsByChampionshipController(CombatsByChampionshipRepository repository){
+
+    CombatsByChampionshipController(CombatsByChampionshipRepository repository, RegistrationsByChampionshipRepository registrationRepository){
         this.repository = repository;
+        this.registrationRepository = registrationRepository;
     }
 
     @GetMapping("/combats")
@@ -39,8 +43,7 @@ public class CombatsByChampionshipController {
     }
 
     @PostMapping("/combat")
-    public CombatsByChampionship createCombatsByChampionship(@RequestBody CombatsByChampionship newCombats){
-        return repository.save(newCombats);
+    public void createCombatsByCategory(@RequestBody CombatByCategoryDTO newCombats){
     }
 
     // TO DO, CREATE METHOD THAT IMPLEMENT SAVE A BATCH OF COMBATS
@@ -52,50 +55,41 @@ public class CombatsByChampionshipController {
     }
 
     @PutMapping("/combats/{id}")
-    public CombatsByChampionship updateCombatsByChampionship(@RequestBody CombatsByChampionship newCombats, @PathVariable Integer id){
+    public CombatsByChampionship updateCombatsByChampionship(@RequestBody UpdateCombatDTO newCombats, @PathVariable Integer id){
         return repository.findById(id)
-                .map((combats)->{combats.setCombatNumber(newCombats.getCombatNumber());
+                .map((combats)->{
                     combats.setPointsBlue(newCombats.getPointsBlue());
                     combats.setPointsRed(newCombats.getPointsRed());
-                    combats.setAthleteBlue(newCombats.getAthleteBlue());
-                    combats.setAthleteRed(newCombats.getAthleteRed());
-                    combats.setWinner(newCombats.getWinner());
+                    registrationRepository.findById(newCombats.getAthleteBlue()).ifPresent(combats::setAthleteBlue);
+                    registrationRepository.findById(newCombats.getAthleteRed()).ifPresent(combats::setAthleteRed);
+                    registrationRepository.findById(newCombats.getWinner()).ifPresent(combats::setWinner);
                     return repository.save(combats);
                 })
-                .orElseGet(() -> {
-                    return repository.save(newCombats);
-                });
+                .orElseThrow(()-> new EntityNotFoundException("Combat %s not found".formatted(id)));
     }
 
-    @DeleteMapping("/combats/{id}")
-    public void deleteCombatsByChampionship(@PathVariable Integer id){
-        repository.deleteById(id);
-    }
-
-    @GetMapping("/pyramid/{championshipId}")
-    public @ResponseBody Iterable<RoundDTO> pyramid(@PathVariable Integer championshipId){
-        Integer numberOfRounds = repository.numberOfRounds(championshipId).orElseThrow(()-> new EntityNotFoundException("Provided championship does not have combats"));
+    @GetMapping("/pyramid/{categoryId}")
+    public @ResponseBody Iterable<RoundDTO> pyramid(@PathVariable Integer categoryId){
+        Integer numberOfRounds = repository.numberOfRounds(categoryId).orElseThrow(()-> new EntityNotFoundException("Provided category of championship does not have combats"));
         List<RoundDTO> rounds = new ArrayList<>();
         for(int i = 1; i <= numberOfRounds; i++) {
             RoundDTO round = new RoundDTO();
-            List<CombatsByChampionship> combatsByChampionships = repository.findByCategoriesByChampionship_idAndRoundOrderByIdAsc(championshipId, i);
+            List<CombatsByChampionship> combatsByChampionships = repository.findByCategoriesByChampionship_idAndRoundOrderByIdAsc(categoryId, i);
             List<MatchDTO> matches = combatsByChampionships.stream().map(combatByChampionship -> {
                 MatchDTO matchDTO = new MatchDTO();
                 matchDTO.setId(combatByChampionship.getId().toString());
                 if(combatByChampionship.isFeedIn()) {
                     FeedInDTO feedInDTO = new FeedInDTO();
-                    feedInDTO.setName("Paso directo");
-                    feedInDTO.setId(combatByChampionship.getId().toString());
+                    feedInDTO.setName(combatByChampionship.getWinner().getAthlete().getName());
+                    feedInDTO.setId(combatByChampionship.getWinner().getId().toString());
                     matchDTO.setTitle("By");
                     matchDTO.setFeedIn(feedInDTO);
                 } else {
-                    TeamDTO team1 = new TeamDTO();
                     matchDTO.setTitle("# " + combatByChampionship.getCombatNumber());
-                    team1.setId(combatByChampionship.getCombatNumber() + "Team1");
-                    team1.setName(combatByChampionship.getCombatNumber() + "Team1");
-                    TeamDTO team2 = new TeamDTO();
-                    team2.setId(combatByChampionship.getCombatNumber() + "Team2");
-                    team2.setName(combatByChampionship.getCombatNumber() + "Team2");
+                    TeamDTO team1 = convertToTeamDTO(combatByChampionship.getAthleteBlue());
+                    TeamDTO team2 = convertToTeamDTO(combatByChampionship.getAthleteRed());
+                    team1.setScore(combatByChampionship.getPointsBlue());
+                    team2.setScore(combatByChampionship.getPointsRed());
                     matchDTO.setTeam1(team1);
                     matchDTO.setTeam2(team2);
                 }
@@ -105,5 +99,17 @@ public class CombatsByChampionshipController {
             rounds.add(round);
         }
         return rounds;
+    }
+
+    public TeamDTO convertToTeamDTO(RegistrationsByChampionship registration) {
+        TeamDTO team = new TeamDTO();
+        if(registration!= null) {
+            team.setId(registration.getId().toString());
+            team.setName(registration.getAthlete().getName());
+        } else{
+            team.setId("");
+            team.setName("_");
+        }
+        return team;
     }
 }
