@@ -22,8 +22,13 @@ public class CategoriesByChampioshipController {
         this.repository = repository;
     }
 
+    @GetMapping("/championship/{championship}/categ-champ")
+    public @ResponseBody Iterable<CategoriesByChampionship> getAllCategoriesByChampionship(@PathVariable Integer championship){
+        return repository.findByChampionship_id(championship);
+    }
+
     @GetMapping("/categ-champ")
-    public @ResponseBody Iterable<CategoriesByChampionship> getAllCategariesByChampionship(){
+    public @ResponseBody Iterable<CategoriesByChampionship> getAllCategoriesChampionship(){
         return repository.findAll();
     }
 
