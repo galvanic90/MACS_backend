@@ -2,8 +2,11 @@ package com.xaraxx.macs.controllers;
 
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
 
+import com.xaraxx.macs.mappers.LocationMapper;
 import com.xaraxx.macs.models.Location;
+import com.xaraxx.macs.DTOs.LocationDTO;
 import com.xaraxx.macs.repositories.LocationRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LocationController {
     @Autowired
     private final LocationRepository repository;
+    LocationMapper locationMapper;
 
-    LocationController(LocationRepository repository){
+    LocationController(LocationRepository repository, LocationMapper locationMapper) {
         this.repository = repository;
+        this.locationMapper = locationMapper;
     }
 
     @GetMapping("/location")
@@ -29,8 +34,9 @@ public class LocationController {
     }
 
     @PostMapping("/location")
-    public Location createLocation(@RequestBody Location newLocation){
-       return  repository.save(newLocation);
+    public Location createLocation(@Valid @RequestBody LocationDTO newLocation){
+        Location location = locationMapper.convertToLocation(newLocation);
+       return  repository.save(location);
     }
 
     @GetMapping("/location/{id}")
@@ -41,17 +47,10 @@ public class LocationController {
     }
 
     @PutMapping("/location/{id}")
-    public Location updateLocationById(@RequestBody Location newLocation, @PathVariable Integer id){
-        return repository.findById(id)
-                .map((location)->{ location.setName(newLocation.getName());
-                    location.setAddress(newLocation.getAddress());
-                    location.setPhoneNumber(newLocation.getPhoneNumber());
-                    location.setMunicipality(newLocation.getMunicipality());
-                    return repository.save(location);
-                })
-                .orElseGet(()->{
-                    return repository.save(newLocation);
-                });
+    public Location updateLocationById(@RequestBody LocationDTO newLocation, @PathVariable Integer id){
+       Location location = locationMapper.convertToLocation(newLocation);
+       location.setId(id);
+       return repository.save(location);
     }
 
     @DeleteMapping("/location/{id}")
