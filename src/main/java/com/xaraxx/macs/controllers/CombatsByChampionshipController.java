@@ -81,18 +81,24 @@ public class CombatsByChampionshipController {
             List<CombatsByChampionship> combatsByChampionships = repository.findByCategoriesByChampionship_idAndRoundOrderByIdAsc(championshipId, i);
             List<MatchDTO> matches = combatsByChampionships.stream().map(combatByChampionship -> {
                 MatchDTO matchDTO = new MatchDTO();
+                matchDTO.setId(combatByChampionship.getId().toString());
                 if(combatByChampionship.isFeedIn()) {
                     FeedInDTO feedInDTO = new FeedInDTO();
                     feedInDTO.setName("Paso directo");
-                    feedInDTO.setId("5");
+                    feedInDTO.setId(combatByChampionship.getId().toString());
+                    matchDTO.setTitle("By");
                     matchDTO.setFeedIn(feedInDTO);
                 } else {
                     TeamDTO team1 = new TeamDTO();
+                    matchDTO.setTitle("# " + combatByChampionship.getCombatNumber());
+                    team1.setId(combatByChampionship.getCombatNumber() + "Team1");
+                    team1.setName(combatByChampionship.getCombatNumber() + "Team1");
                     TeamDTO team2 = new TeamDTO();
+                    team2.setId(combatByChampionship.getCombatNumber() + "Team2");
+                    team2.setName(combatByChampionship.getCombatNumber() + "Team2");
                     matchDTO.setTeam1(team1);
                     matchDTO.setTeam2(team2);
                 }
-                matchDTO.setTitle("# " + combatByChampionship.getCombatNumber());
                 return matchDTO;
             }).toList();
             round.setMatchs(matches);

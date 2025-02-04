@@ -1,9 +1,11 @@
 package com.xaraxx.macs.DTOs.combat;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.annotation.Nullable;
 
 import java.util.Objects;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TeamDTO {
     String id;
     String name;

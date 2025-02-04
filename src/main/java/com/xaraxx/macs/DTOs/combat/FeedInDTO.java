@@ -1,7 +1,10 @@
 package com.xaraxx.macs.DTOs.combat;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Objects;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FeedInDTO {
     String id;
     String name;
