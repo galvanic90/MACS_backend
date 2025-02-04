@@ -1,8 +1,11 @@
 package com.xaraxx.macs.controllers;
 
+import com.xaraxx.macs.DTOs.ChampionshipDTO;
 import com.xaraxx.macs.exceptions.EntityNotFoundException;
+import com.xaraxx.macs.mappers.ChampionshipMapper;
 import com.xaraxx.macs.models.Championship;
 import com.xaraxx.macs.repositories.ChampionshipRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ChampionshipController {
     @Autowired
     private final ChampionshipRepository repository;
+    ChampionshipMapper championshipMapper;
 
     ChampionshipController(ChampionshipRepository repository){
         this.repository = repository;
@@ -28,8 +32,9 @@ public class ChampionshipController {
     }
 
     @PostMapping("/championship")
-    public Championship createChampionship(@RequestBody Championship newChampionship){
-        return repository.save(newChampionship);
+    public Championship createChampionship(@Valid @RequestBody ChampionshipDTO newChampionship){
+        Championship championship = championshipMapper.convertToChampionship(newChampionship);
+        return repository.save(championship);
     }
 
     @GetMapping("/championship/{id}")
@@ -39,18 +44,10 @@ public class ChampionshipController {
     }
 
     @PutMapping("/championship/{id}")
-    public Championship updateChampionshipById(@PathVariable Integer id, @RequestBody Championship newChampionship){
-        return repository.findById(id)
-                .map((championship)->{championship.setName(newChampionship.getName());
-                    championship.setClub(newChampionship.getClub());
-                    championship.setLocation(newChampionship.getLocation());
-                    championship.setStartEventDate(newChampionship.getStartEventDate());
-                    championship.setEndEventDate(newChampionship.getEndEventDate());
-                    return repository.save(championship);
-                 })
-                .orElseGet(() -> {
-                    return repository.save(newChampionship);
-                });
+    public Championship updateChampionshipById(@PathVariable Integer id, @RequestBody ChampionshipDTO newChampionship){
+        Championship championship = championshipMapper.convertToChampionship(newChampionship);
+        championship.setId(id);
+        return repository.save(championship);
     }
 
     @DeleteMapping("/championship/{id}")
