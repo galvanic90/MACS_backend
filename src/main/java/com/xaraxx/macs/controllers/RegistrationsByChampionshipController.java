@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @RestController
 public class RegistrationsByChampionshipController {
     @Autowired
@@ -24,6 +26,11 @@ public class RegistrationsByChampionshipController {
     @GetMapping("/registrations")
     public @ResponseBody Iterable<RegistrationsByChampionship> getAllRegistrationsByChampionship(){
         return repository.findAll();
+    }
+
+    @GetMapping("/category/{category}/registrations")
+    public @ResponseBody List<RegistrationsByChampionship> getRegistrationsByCategory(@PathVariable Integer category){
+        return repository.findByCategoriesByChampionship_id(category);
     }
 
     @PostMapping("/registrations")
