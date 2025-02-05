@@ -22,8 +22,9 @@ public class ChampionshipController {
     private final ChampionshipRepository repository;
     ChampionshipMapper championshipMapper;
 
-    ChampionshipController(ChampionshipRepository repository){
+    ChampionshipController(ChampionshipRepository repository, ChampionshipMapper championshipMapper){
         this.repository = repository;
+        this.championshipMapper = championshipMapper;
     }
 
     @GetMapping("/championship")
